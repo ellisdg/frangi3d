@@ -164,7 +164,7 @@ def filter_out_background(voxel_data, black_white, eigen2, eigen3):
     return voxel_data
 
 
-def compute_vesselness_image_with_smoothing(image, sigmas, alpha=0.5, beta=0.5, frangic=500, black_white=True):
+def compute_vesselness_image_recursively(image, sigmas, alpha=0.5, beta=0.5, frangic=500, black_white=True):
     output_vesselness_image = None
     for sigma in sigmas:
         str_sigma = "{0:.1f}".format(sigma).replace(".", "_")
