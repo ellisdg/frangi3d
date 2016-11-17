@@ -87,6 +87,18 @@ def compute_eigen_values_from_hessian(hessian):
             sys.exit(1)
 
 
+def compute_eigen_values_from_image(image, sigma):
+    hessian = compute_hessian_matrix(image, sigma)
+    return compute_eigen_values_from_hessian(hessian)
+
+
+def compute_eigen_value_images_from_image(image, sigma):
+    eigen_value_images = list()
+    for eigenvalues in compute_eigen_values_from_image(image=image, sigma=sigma):
+        eigen_value_images.append(create_image_like(eigenvalues, image))
+    return eigen_value_images
+
+
 def sortbyabs(a, axis=0):
     """Sort array along a given axis by the absolute value
     modified from: http://stackoverflow.com/a/11253931/4067734
@@ -130,11 +142,11 @@ def compute_vesselness(eigen1, eigen2, eigen3, alpha, beta, c, black_white):
 
 
 def compute_vesselness_image(image, sigma=0, alpha=0.5, beta=0.5, frangic=500, black_white=False):
-    hessian = compute_hessian_matrix(image, sigma=sigma)
-    eigen1, eigen2, eigen3 = compute_eigen_values_from_hessian(hessian)
+    float_image = sitk.Cast(image, sitk.sitkFloat64)
+    eigen1, eigen2, eigen3 = compute_eigen_values_from_image(image=float_image, sigma=sigma)
     voxel_data = compute_vesselness(eigen1=eigen1, eigen2=eigen2, eigen3=eigen3, black_white=black_white,
                                     alpha=alpha, beta=beta, c=frangic)
-    return create_image_like(voxel_data, image)
+    return create_image_like(voxel_data, float_image)
 
 
 def check_eigen_values(eigen1, eigen2, eigen3):
