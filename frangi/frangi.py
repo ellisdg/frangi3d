@@ -27,7 +27,7 @@ def frangi(nd_array, scale_range=(1, 10), scale_step=2, alpha=0.5, beta=0.5, fra
 def compute_measures(eigen1, eigen2, eigen3):
     """
     RA - plate-like structures
-    RB - blobl-like structures
+    RB - blob-like structures
     S - background
     """
     Ra = divide_nonzero(np.abs(eigen2), np.abs(eigen3))
